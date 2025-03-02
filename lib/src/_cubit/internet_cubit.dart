@@ -79,7 +79,8 @@ class InternetCubit extends Cubit<InternetState> {
   late final Connectivity connectivity;
 
   ///  Connectivity StreamSubscription
-  late final StreamSubscription<ConnectivityResult> connectivitySubscription;
+  late final StreamSubscription<List<ConnectivityResult>>
+      connectivitySubscription;
 
   ///URL lookup for internet
   final String? urlLookup;
@@ -104,7 +105,8 @@ class InternetCubit extends Cubit<InternetState> {
   void _subscribeConnectivityChanges() {
     connectivitySubscription =
         connectivity.onConnectivityChanged.listen((connectivityEvent) {
-      if (connectivityEvent == ConnectivityResult.none) {
+      if (connectivityEvent.isEmpty ||
+          connectivityEvent.first == ConnectivityResult.none) {
         _emitNoInternet();
       } else {
         _checkInternet();
